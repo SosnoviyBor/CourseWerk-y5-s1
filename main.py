@@ -1,30 +1,18 @@
-import os
-from pystray import Icon, Menu, MenuItem
+from pystray import Icon
 from PIL import Image
+
+import falloffImage
+import menu
 
 
 class Main:
-    icon = Icon('test', Image.open("static/icon.png"),
-                menu=Menu(
-                    # TODO item constructor
-                    MenuItem(
-                        "Config",
-                        lambda: os.startfile("config.toml")
-                    ),
-                    MenuItem(
-                        "About",
-                        lambda: os.startfile("static/about.txt")
-                    ),
-                    Menu.SEPARATOR,
-                    MenuItem(
-                        'Exit',
-                        lambda icon: icon.stop()
-                    ),
-                )
-            )
+    try:    image = Image.open("static/icon.png")
+    except: image = falloffImage.generate(64, 64, 'black', 'white')
+    
+    app = Icon('test', image, menu=menu.generate())
     
     def __init__(self):
-        self.icon.run()
+        self.app.run()
 
 
 if __name__ == "__main__":

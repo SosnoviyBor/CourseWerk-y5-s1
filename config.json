@@ -1,0 +1,22 @@
+{
+    "layouts": {
+        "displayed": [
+            "qwerty",
+            "\u0439\u0446\u0443\u043a\u0435\u043d-ua"
+        ],
+        "active": "\u0439\u0446\u0443\u043a\u0435\u043d-ua -> qwerty"
+    },
+    "options": {
+        "translate": {
+            "do": true
+        },
+        "copy": {
+            "do": true,
+            "keybind": "CTRL + c"
+        },
+        "paste": {
+            "do": true,
+            "keybind": "CTRL + v"
+        }
+    }
+}
