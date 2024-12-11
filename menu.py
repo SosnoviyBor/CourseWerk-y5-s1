@@ -4,16 +4,17 @@ import json
 
 
 # important shit
-PATH_TO_CONFIG = "./config.json"
-with open(PATH_TO_CONFIG, "r", encoding="UTF-8") as file:
+with open("./config.json", "r", encoding="UTF-8") as file:
     config = json.load(file)
+
 
 def generate() -> Menu:
     mainMenu = Menu(
+        MenuItem("Layman", None, enabled=False),
+        Menu.SEPARATOR,
         layoutPickerMenu(),
         Menu.SEPARATOR,
-        MenuItem("Config", lambda: os.startfile(PATH_TO_CONFIG)),
-        MenuItem("About", lambda: os.startfile("./static/about.txt")),
+        MenuItem("Config", lambda: os.startfile("config.json")),
         Menu.SEPARATOR,
         MenuItem("Exit", lambda app: app.stop()),
     )
@@ -43,7 +44,8 @@ def layoutPickerMenu():
                 radio=True
             )
             for scheme in schemes
-        ])
+        ]),
+        default=True
     )
     
     return menu
@@ -60,9 +62,10 @@ def setActiveLayout(v):
         activeLayout = v
         
         # config update
-        config["layouts"]["active"] = activeLayout
-        with open(PATH_TO_CONFIG, "w") as file:
-            json.dump(config, file, indent=4)
+        if config["layouts"]["active"] != activeLayout:
+            config["layouts"]["active"] = activeLayout
+            with open("./config.json", "w", encoding="UTF-8") as file:
+                json.dump(config, file, indent=4)
         
     return inner
 

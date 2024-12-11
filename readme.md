@@ -1,8 +1,10 @@
-# name
+# Layman, the layout switcher
 
-desc
+Курсова робота ля-ля-ля...
 
-## libs
-- pyclip
-- pynput
+## Requirements
+- OS: Windows (others haven't been tested yet)
+- Python 3.11+
 - pystray
+- pynput
+- pyclip

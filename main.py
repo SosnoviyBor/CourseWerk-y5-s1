@@ -9,7 +9,7 @@ class Main:
     try:    image = Image.open("static/icon.png")
     except: image = falloffImage.generate(64, 64, 'black', 'white')
     
-    app = Icon('test', image, menu=menu.generate())
+    app = Icon('Layman', image, menu=menu.generate())
     
     def __init__(self):
         self.app.run()
