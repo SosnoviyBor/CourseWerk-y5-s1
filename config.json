@@ -8,15 +8,16 @@
     },
     "options": {
         "translate": {
-            "do": true
+            "do": true,
+            "keybind": "<alt>+b"
         },
         "copy": {
             "do": true,
-            "keybind": "CTRL + c"
+            "keybind": "<ctrl>+c"
         },
         "paste": {
             "do": true,
-            "keybind": "CTRL + v"
+            "keybind": "<ctrl>+v"
         }
     }
 }

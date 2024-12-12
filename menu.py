@@ -1,23 +1,15 @@
 import os
 from pystray import Menu, MenuItem
-import json
+
+from configHandler import config, updateConfig
 
 
-# important shit
-with open("./config.json", "r", encoding="UTF-8") as file:
-    config = json.load(file)
-
-
-def generate() -> Menu:
-    mainMenu = Menu(
-        MenuItem("Layman", None, enabled=False),
+def generate() -> tuple:
+    mainMenu = (MenuItem("Layman", None, enabled=False),
         Menu.SEPARATOR,
         layoutPickerMenu(),
         Menu.SEPARATOR,
-        MenuItem("Config", lambda: os.startfile("config.json")),
-        Menu.SEPARATOR,
-        MenuItem("Exit", lambda app: app.stop()),
-    )
+        MenuItem("Config", lambda: os.startfile("config.json")))
     
     return mainMenu
 
@@ -64,8 +56,7 @@ def setActiveLayout(v):
         # config update
         if config["layouts"]["active"] != activeLayout:
             config["layouts"]["active"] = activeLayout
-            with open("./config.json", "w", encoding="UTF-8") as file:
-                json.dump(config, file, indent=4)
+            updateConfig(config)
         
     return inner
 
