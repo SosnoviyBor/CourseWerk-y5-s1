@@ -1,12 +1,10 @@
-import json
+import fileHandlers.layoutHandler as layoutHandler
 
 
 def translate(inputText:str, inLayoutFilename:str, outLayoutFilename:str) -> str:
     # pick correct layouts
-    with (open(f"./layouts/{inLayoutFilename}.json", "r", encoding="UTF-8") as file1,
-        open(f"./layouts/{outLayoutFilename}.json", "r", encoding="UTF-8") as file2):
-        inLayout = json.load(file1)
-        outLayout = json.load(file2)
+    inLayout = layoutHandler.getLayout(inLayoutFilename)
+    outLayout = layoutHandler.getLayout(outLayoutFilename)
 
     # translate text
     outputText = ""

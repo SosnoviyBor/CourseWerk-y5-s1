@@ -2,7 +2,8 @@ from pynput import keyboard
 import pyclip
 
 import translator
-from configHandler import config
+from fileHandlers.configHandler import config
+import fileHandlers.layoutHandler as layoutHandler
 
 
 class Handler:
@@ -31,13 +32,41 @@ class Handler:
         # get text
         if config["options"]["copy"]["do"]:
             self.pressKeybind(config["options"]["copy"]["keybind"])
-        # cropping the sides of pasted data since pyclip is dumb
-        text = str(pyclip.paste())[2:-1]
-        text = text.replace("\\r\\n", "\n")
+        text = pyclip.paste().decode()
+        
+        # if nothing was selected
+        if text.strip() == "":
+            return
+        
+        inLayout = None
+        outLayout = None
+        # auto mode
+        if config["layouts"]["active"] == "Auto":
+            layoutNames = [
+                config["layouts"]["auto"][0],
+                config["layouts"]["auto"][1]]
+            layouts = [
+                layoutHandler.getLayout(config["layouts"]["auto"][0]),
+                layoutHandler.getLayout(config["layouts"]["auto"][1])]
+            
+            for char in text:
+                if char.isalpha():
+                    for layout in layouts:
+                        # may fuck up with "implicit" case
+                        if char.lower() in layout["lower"]:
+                            print(f"triggered with {char}")
+                            inLayout = layoutNames.pop(layouts.index(layout))
+                            outLayout = layoutNames.pop()
+                            break
+                if inLayout:
+                    break
+        # manual mode
+        else:
+            inLayout, outLayout = config["layouts"]["active"].split(" -> ")
         
         # translate it
         translatedText = translator.translate(
-            text, *config["layouts"]["active"].split(" -> "))
+            text, inLayout, outLayout)
         
         # paste it
         pyclip.copy(translatedText)

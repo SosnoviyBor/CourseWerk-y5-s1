@@ -1,17 +1,14 @@
 from pystray import Icon, Menu, MenuItem
-from PIL import Image
 
-import falloffImage
+from fileHandlers.imageHandler import getImage
 import menu
 from keyHandler import Handler
 
 
 class Main:
+    
     def __init__(self):
-        try:    image = Image.open("static/icon.png")
-        except: image = falloffImage.generate(64, 64, 'black', 'white')
-        
-        self.app = Icon('test name', image, menu=Menu(
+        self.app = Icon('test name', getImage(), menu=Menu(
             *menu.generate(),
             Menu.SEPARATOR,
             MenuItem("Exit", lambda: self.stopApp())

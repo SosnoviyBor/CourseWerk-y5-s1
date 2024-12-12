@@ -18,14 +18,17 @@ Make sure to list in `displayed` layouts only those, which you will actually use
 
 __Configs update only on Layman's launch!__
 
-1. Run the program with `py main.py` command. Layman's icon in your icon bar will appear.
-2. Select text you want to translate and hit `Alt + B` keys.
-3. ? ? ?
-4. Profit!
+1. Run Layman with `py main.py` command.
+2. Pick your layout option in Layman.
+3. Select text you want to translate and hit `Alt + B` keys.
+
+__`Auto` layout works only with different alphabets!__ And supports only 2 layouts per time.
+
+4. ? ? ?
+5. Profit!
 
 ## Todo
 - Config verifier and default config generator
-- Layout autodetect for cyr/lat
 - CI/CD
 - Implement autostart
 - Linux support

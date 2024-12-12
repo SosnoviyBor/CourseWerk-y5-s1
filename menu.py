@@ -1,7 +1,7 @@
 import os
 from pystray import Menu, MenuItem
 
-from configHandler import config, updateConfig
+from fileHandlers.configHandler import config, updateConfig
 
 
 def generate() -> tuple:
@@ -28,7 +28,17 @@ def layoutPickerMenu():
     # generate the menu itself
     menu = MenuItem(
         "Layouts",
-        Menu(*[
+        Menu(
+            # auto layout
+            MenuItem(
+                "Auto",
+                setActiveLayout("Auto"),
+                checked=getActiveLayout("Auto"),
+                radio=True
+            ),
+            Menu.SEPARATOR,
+            # strict layouts
+            *[
             MenuItem(
                 scheme,
                 setActiveLayout(scheme),
