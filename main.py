@@ -1,3 +1,4 @@
+import traceback
 from pystray import Icon, Menu, MenuItem
 
 from fileHandlers.imageHandler import getImage
@@ -14,8 +15,12 @@ class Main:
             MenuItem("Exit", lambda: self.stopApp())
         ))
         
-        self.app.run_detached()
-        self.keyHandler = Handler()
+        try:
+            self.app.run_detached()
+            self.keyHandler = Handler()
+        except Exception:
+            self.stopApp()
+            traceback.print_exc()
     
     
     def stopApp(self):

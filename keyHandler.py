@@ -14,7 +14,7 @@ class Handler:
         hotkey = keyboard.HotKey(
             keyboard.HotKey.parse(
                 config["options"]["translate"]["keybind"]),
-            on_activate=self.onActivate)
+            on_activate=self.activate)
 
         # register listener for it
         self.listener = keyboard.Listener(
@@ -28,16 +28,47 @@ class Handler:
         return lambda key: func(self.listener.canonical(key))
 
 
-    def onActivate(self):
-        # get text
-        if config["options"]["copy"]["do"]:
-            self.pressKeybind(config["options"]["copy"]["keybind"])
-        text = pyclip.paste().decode()
-        
-        # if nothing was selected
+    def activate(self):
+        text = self.getText()
         if text.strip() == "":
             return
+
+        translatedText = translator.translate(text, *self.getLayouts(text))
+
+        pyclip.copy(translatedText)
+        if config["options"]["paste"]["do"]:
+            self.pressKeybind(config["options"]["paste"]["keybind"])
+
+
+    def getText(self) -> str:
+        # keybind enabled
+        if config["options"]["copy"]["do"]:
+            pyclip.copy("")
+            text = ""
+            
+            self.pressKeybind(config["options"]["copy"]["keybind"])
+            # simulating keypresses actually takes time
+            # waiting for clipboard to update
+            while text == pyclip.paste().decode():
+                pass
+            text = pyclip.paste().decode()
         
+        # keybind disabled
+        else:
+            try:
+                text = pyclip.paste().decode()
+            # as of what i know it can be raised
+            # if clipboard contains something other than string
+            except Exception as e:
+                print("Warning! While getting clipboard data occured an exception:\n"+
+                    f"{type(e).__name__}({e})")
+                pyclip.copy("")
+                text = ""
+        
+        return text
+    
+    
+    def getLayouts(self, text:str) -> tuple[str, str]:
         inLayout = None
         outLayout = None
         # auto mode
@@ -54,34 +85,28 @@ class Handler:
                     for layout in layouts:
                         # may fuck up with "implicit" case
                         if char.lower() in layout["lower"]:
-                            print(f"triggered with {char}")
                             inLayout = layoutNames.pop(layouts.index(layout))
                             outLayout = layoutNames.pop()
                             break
                 if inLayout:
                     break
+            if not inLayout:
+                return
         # manual mode
         else:
             inLayout, outLayout = config["layouts"]["active"].split(" -> ")
         
-        # translate it
-        translatedText = translator.translate(
-            text, inLayout, outLayout)
-        
-        # paste it
-        pyclip.copy(translatedText)
-        if config["options"]["paste"]["do"]:
-            self.pressKeybind(config["options"]["paste"]["keybind"])
+        return inLayout, outLayout
 
 
-    def pressKeybind(self, keybind):
+    def pressKeybind(self, keybind:str):
         # release already translation keybind buttons
         # so they don't interfiere
         for keyName in keyboard.HotKey.parse(config["options"]["translate"]["keybind"]):
             try:    key = keyboard.Key(keyName)
             except: key = keyName
             self.controller.release(key)
-        
+
         # parse keybind keys into a digestable form
         # since pynput doesnt want you to press key combos
         keys = []

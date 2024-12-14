@@ -57,7 +57,7 @@ def verifyConfig(config:dict):
         raise(Exception(f"Encountered unknown key '{key}'"))
 
 
-def verifyConfigKeys(default:dict, actual:dict) -> bool:
+def verifyConfigKeys(default:dict, actual:dict) -> str | bool:
     for key in actual.keys():
         # do keys match
         if key not in default.keys():

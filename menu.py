@@ -15,7 +15,7 @@ def generate() -> tuple:
     return mainMenu
 
 
-def layoutPickerMenu():
+def layoutPickerMenu() -> Menu:
     # generate schemes for translation
     displayedLayouts = config["layouts"]["displayed"]
     schemes = []
