@@ -5,7 +5,8 @@ from fileHandlers.configHandler import config, updateConfig
 
 
 def generate() -> tuple:
-    mainMenu = (MenuItem("Layman", None, enabled=False),
+    mainMenu = (
+        MenuItem("Layman", None, enabled=False),
         Menu.SEPARATOR,
         layoutPickerMenu(),
         Menu.SEPARATOR,
@@ -34,7 +35,9 @@ def layoutPickerMenu():
                 "Auto",
                 setActiveLayout("Auto"),
                 checked=getActiveLayout("Auto"),
-                radio=True
+                radio=True,
+                # check if auto lists exactly 2 layouts
+                enabled=len(set(config["layouts"]["auto"])) == 2
             ),
             Menu.SEPARATOR,
             # strict layouts

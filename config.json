@@ -2,11 +2,11 @@
     "layouts": {
         "displayed": [
             "qwerty",
-            "\u0439\u0446\u0443\u043a\u0435\u043d-ua"
+            "йцукен-ua"
         ],
         "auto": [
             "qwerty",
-            "\u0439\u0446\u0443\u043a\u0435\u043d-ua"
+            "йцукен-ua"
         ],
         "active": "Auto"
     },

@@ -8,7 +8,7 @@ from keyHandler import Handler
 class Main:
     
     def __init__(self):
-        self.app = Icon('test name', getImage(), menu=Menu(
+        self.app = Icon('Layman', getImage(), menu=Menu(
             *menu.generate(),
             Menu.SEPARATOR,
             MenuItem("Exit", lambda: self.stopApp())
