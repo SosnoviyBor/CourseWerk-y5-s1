@@ -1,5 +1,6 @@
 from pynput import keyboard
 import pyclip
+import time
 
 import translator
 from fileHandlers.configHandler import config
@@ -49,8 +50,12 @@ class Handler:
             self.pressKeybind(config["options"]["copy"]["keybind"])
             # simulating keypresses actually takes time
             # waiting for clipboard to update
+            copyTime = time.time()
             while text == pyclip.paste().decode():
-                pass
+                if time.time() - copyTime > 2:
+                    return ""
+                # small speedbump for the loop
+                time.sleep(0.05)
             text = pyclip.paste().decode()
         
         # keybind disabled
